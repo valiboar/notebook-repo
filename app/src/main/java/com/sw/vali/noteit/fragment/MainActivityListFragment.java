@@ -101,6 +101,8 @@ public class MainActivityListFragment extends ListFragment {
                 launchNoteDetailsActivity(FragmentToLaunch.EDIT, rowPosition);
                 return true;
             case R.id.context_menu_delete_item:
+
+                // TODO: 17-Sep-16 AlertDialog for confirmation
                 NoteItDbAdapter dbAdapter = new NoteItDbAdapter(getActivity().getBaseContext());
                 dbAdapter.open();
                 dbAdapter.deleteNote(note.getId());

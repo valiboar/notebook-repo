@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setMainLayoutBackgroundColor(Color.parseColor("#c1d7d7"));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -87,13 +90,16 @@ public class MainActivity extends AppCompatActivity {
         boolean isBackgroundDark = sharedPreferences.getBoolean("background_color", false);
 
         if(isBackgroundDark) {
-            LinearLayout mainLayout = (LinearLayout) findViewById(R.id.main_activity_layout);
-
-            mainLayout.setBackgroundColor(Color.parseColor("#3c3f41"));
+            setMainLayoutBackgroundColor(Color.parseColor("#3c3f41"));
         }
 
         String notebookTitle = sharedPreferences.getString("title", "Notebook");
 
         setTitle(notebookTitle);
+    }
+
+    private void setMainLayoutBackgroundColor(int color) {
+        LinearLayout mainLayout = (LinearLayout) findViewById(R.id.main_activity_layout);
+        mainLayout.setBackgroundColor(color);
     }
 }

@@ -51,7 +51,7 @@
             android:id="@+id/note_edit_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minLines="3"
+            android:minLines="10"
             android:text="New Text"
             android:textSize="18sp"
             android:textColor="#000000"

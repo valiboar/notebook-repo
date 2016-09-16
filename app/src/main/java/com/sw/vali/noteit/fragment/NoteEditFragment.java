@@ -3,7 +3,12 @@ package com.sw.vali.noteit.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -103,11 +108,31 @@ public class NoteEditFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                
+                if(isNoteEmpty()) {
+                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    Ringtone r = RingtoneManager.getRingtone(getActivity().getBaseContext(), notification);
+                    r.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
+                    r.play();
+
+                    return;
+                }
+                
                 confirmDialogObject.show();
             }
         });
 
         return fragmentLayout;
+    }
+
+    private boolean isNoteEmpty() {
+
+        if (title.getText().toString().isEmpty() && message.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity().getBaseContext(), "The note is empty; create a valid note!", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -167,23 +192,21 @@ public class NoteEditFragment extends Fragment {
                 Log.d(TAG, "Note title: " + title.getText() + "; Note message: " + message.getText() +
                     "; Note category: " + savedButtonCategory);
 
+                // TODO: 17-Sep-16 Code for these situations
+//                if(titleIsEmpty()) {
+//                    
+//                }
+//                
+//                if(messageIsEmpty()) {
+//                    
+//                }
+                
                 NoteItDbAdapter dbAdapter = new NoteItDbAdapter(getActivity().getBaseContext());
 
                 dbAdapter.open();
 
                 // if it's a new note, create it in our database
                 if(isNewNote) {
-
-                    // TODO: 15-Sep-16 Change logic - check these when clicking on save
-                    if (message.getText().toString().isEmpty()) {
-                        Toast.makeText(getActivity().getBaseContext(), "Please fill in the note with information!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (title.getText().toString().isEmpty()) {
-                        Toast.makeText(getActivity().getBaseContext(), "Please provide a title for your note!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
 
                     dbAdapter.createNote(title.getText().toString(), message.getText().toString(),
                             (savedButtonCategory == null) ? NoteCategory.PERSONAL : savedButtonCategory); // if we never modified the category => put the Personal type
