@@ -15,7 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="15dp" />
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/border_note_image"/>
 
     <TextView
         android:id="@+id/list_item_note_title"

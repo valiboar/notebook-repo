@@ -1,6 +1,9 @@
 package com.sw.vali.noteit;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +80,37 @@ public class NoteAdapter extends ArrayAdapter<Note> {
             viewHolder.noteTitle.setText(note.getTitle());
             viewHolder.noteText.setText(note.getMessage());
             viewHolder.noteIcon.setImageResource(note.getAssociatedDrawable());
+
+            switch (note.getNoteCategory()) {
+                case PERSONAL:
+                    convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPersonalNoteBackground));
+
+                    viewHolder.noteTitle.setTextColor(Color.parseColor("#ff5050"));
+                    viewHolder.noteText.setTextColor(Color.parseColor("#ff5050"));
+
+                    break;
+                case TECHNICAL:
+                    convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTechnicalNoteBackground));
+
+                    viewHolder.noteTitle.setTextColor(Color.parseColor("#3399ff"));
+                    viewHolder.noteText.setTextColor(Color.parseColor("#3399ff"));
+
+                    break;
+                case QUOTE:
+                    convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorQuoteNoteBackground));
+
+                    viewHolder.noteTitle.setTextColor(Color.parseColor("#e6b800"));
+                    viewHolder.noteText.setTextColor(Color.parseColor("#e6b800"));
+
+                    break;
+                case FINANCE:
+                    convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorFinanceNoteBackground));
+
+                    viewHolder.noteTitle.setTextColor(Color.parseColor("#00b300"));
+                    viewHolder.noteText.setTextColor(Color.parseColor("#00b300"));
+
+                    break;
+            }
         }
 
         // now that we modified the view to display appropriate data, return it so it will be displayed

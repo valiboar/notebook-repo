@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -60,8 +61,8 @@ public class MainActivityListFragment extends ListFragment {
 
         setListAdapter(noteAdapter);
 
-//        getListView().setDivider(ContextCompat.getDrawable(getActivity(), android.R.color.holo_blue_dark));
-//        getListView().setDividerHeight(2);
+        getListView().setDivider(ContextCompat.getDrawable(getActivity(), android.R.color.darker_gray));
+        getListView().setDividerHeight(3);
 
         registerForContextMenu(getListView());  // sets a "long-click" listener for the ListView;
                                                 // triggers the onCreateContextMenu (below), which eventually
