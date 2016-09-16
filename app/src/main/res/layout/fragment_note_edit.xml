@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f9f9f9"
+    android:paddingBottom="10dp"
+    android:paddingEnd="10dp"
+    android:paddingStart="12dp"
+    android:paddingTop="10dp">
+
+    <ImageButton
+        android:id="@+id/note_edit_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/p"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="15dp" />
+
+    <ScrollView
+        android:id="@+id/note_edit_title_scrollview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/note_edit_image_button"
+        android:layout_alignBottom="@id/note_edit_image_button">
+
+        <EditText
+            android:id="@+id/note_edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:inputType="text" />
+
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/note_edit_message_scrollview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/note_edit_save_button"
+        android:layout_below="@id/note_edit_title_scrollview"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="4dp">
+
+        <EditText
+            android:id="@+id/note_edit_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="3"
+            android:text="New Text"
+            android:textSize="18sp"
+            android:textColor="#000000"
+            android:background="@null"
+            android:inputType="textMultiLine"
+            android:gravity="top" />
+
+    </ScrollView>
+
+    <Button
+        android:id="@id/note_edit_save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/note_edit_save_button_title"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@id/note_edit_message_scrollview" />
+
+</RelativeLayout>
