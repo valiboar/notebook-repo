@@ -12,6 +12,7 @@
 
     <!-- Long click context menu strings -->
     <string name="context_menu_edit_item_title">Edit</string>
+    <string name="context_menu_delete_item_title">Delete</string>
 
     <!-- Fragment widgets strings -->
     <string name="note_edit_save_button_title">Save Note</string>

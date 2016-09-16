@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- * Created by Vali on 15-Sep-16.
+ * The DB adapter
  */
 public class NoteItDbAdapter {
 
@@ -77,6 +77,10 @@ public class NoteItDbAdapter {
         cursor.close();
 
         return newNote;
+    }
+
+    public long deleteNote(long idToDelete) {
+        return sqlDB.delete(NOTE_TABLE, COLUMN_ID + " = " + idToDelete, null);
     }
 
     public long updateNote(long idToUpdate, String newTitle, String newMessage, NoteCategory newNoteCategory) {
