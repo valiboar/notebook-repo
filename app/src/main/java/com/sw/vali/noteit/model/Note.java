@@ -5,6 +5,7 @@ import com.sw.vali.noteit.model.enums.NoteCategory;
 
 /**
  * The note model - includes an id, a title, a message, a category and the creation date (in millis).
+ *
  */
 public class Note {
     private long id;
