@@ -5,10 +5,12 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.sw.vali.noteit.model.enums.FragmentToLaunch;
@@ -36,14 +38,17 @@ public class MainActivity extends AppCompatActivity {
 
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
-//       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), NoteDetailsActivity.class);
+
+                intent.putExtra(MainActivity.EXTRA_NOTE_FRAGMENT_TO_LOAD, FragmentToLaunch.CREATE);
+
+                startActivity(intent);
+            }
+        });
 
         loadPreferences();
     }
@@ -70,16 +75,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
             return true;
-        } else if (id == R.id.action_add_note) {
-
-            Intent intent = new Intent(this, NoteDetailsActivity.class);
-
-            intent.putExtra(MainActivity.EXTRA_NOTE_FRAGMENT_TO_LOAD, FragmentToLaunch.CREATE);
-
-            startActivity(intent);
-
-            return true;
         }
+//        else if (id == R.id.action_add_note) {
+//
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

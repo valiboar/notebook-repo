@@ -1,18 +1,26 @@
 package com.sw.vali.noteit.fragment;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sw.vali.noteit.NoteItDbAdapter;
 import com.sw.vali.noteit.model.enums.FragmentToLaunch;
@@ -21,6 +29,8 @@ import com.sw.vali.noteit.NoteAdapter;
 import com.sw.vali.noteit.R;
 import com.sw.vali.noteit.activity.MainActivity;
 import com.sw.vali.noteit.activity.NoteDetailsActivity;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -33,6 +43,8 @@ public class MainActivityListFragment extends ListFragment {
 
     private ArrayList<Note> notes;
     private NoteAdapter noteAdapter;
+
+    private TextView noOfNotesTextView;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -61,12 +73,31 @@ public class MainActivityListFragment extends ListFragment {
 
         setListAdapter(noteAdapter);
 
-        getListView().setDivider(ContextCompat.getDrawable(getActivity(), android.R.color.darker_gray));
-        getListView().setDividerHeight(3);
+        getListView().setDivider(ContextCompat.getDrawable(getActivity(), R.color.colorMainBackground));
+        getListView().setDividerHeight(20);
+
+        View footerView =  ((LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_footer_notes_listview, null, false);
+        noOfNotesTextView = (TextView) footerView.findViewById(R.id.no_of_notes_textview);
+
+        refreshNoOfNotes();
+
+        getListView().addFooterView(footerView, null, false);
 
         registerForContextMenu(getListView());  // sets a "long-click" listener for the ListView;
                                                 // triggers the onCreateContextMenu (below), which eventually
                                                 // inflate the desired context menu
+    }
+
+    private void refreshNoOfNotes() {
+        noOfNotesTextView.setText(noteAdapter.getCount() + " notes");
+
+        if(noteAdapter.getCount() == 1) {
+            noOfNotesTextView.setText("1 note");
+        }
+
+        if(noteAdapter.getCount() == 0) {
+            noOfNotesTextView.setText("You don't have any notes yet!");
+        }
     }
 
     @Override
@@ -91,28 +122,46 @@ public class MainActivityListFragment extends ListFragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int rowPosition = info.position;
 
-        Note note = (Note) getListAdapter().getItem(rowPosition);
+        final Note note = (Note) getListAdapter().getItem(rowPosition);
 
         // returns to us the id of whatever item was selected
         switch (item.getItemId()) {
             // if we press "Edit"
             case R.id.context_menu_edit_item:
+
                 Log.d(TAG, "Pressed EDIT");
                 launchNoteDetailsActivity(FragmentToLaunch.EDIT, rowPosition);
                 return true;
             case R.id.context_menu_delete_item:
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Warning")
+                        .setMessage("Are you sure you want to delete this note?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                NoteItDbAdapter dbAdapter = new NoteItDbAdapter(getActivity().getBaseContext());
+                                dbAdapter.open();
+                                dbAdapter.deleteNote(note.getId());
 
-                // TODO: 17-Sep-16 AlertDialog for confirmation
-                NoteItDbAdapter dbAdapter = new NoteItDbAdapter(getActivity().getBaseContext());
-                dbAdapter.open();
-                dbAdapter.deleteNote(note.getId());
+                                // refresh notes view
+                                notes.clear();
+                                notes.addAll(dbAdapter.getAllNotes());
+                                noteAdapter.notifyDataSetChanged();
 
-                // refresh notes view
-                notes.clear();
-                notes.addAll(dbAdapter.getAllNotes());
-                noteAdapter.notifyDataSetChanged();
+                                refreshNoOfNotes();
 
-                dbAdapter.close();
+                                dbAdapter.close();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).setIcon(android.R.drawable.ic_dialog_info)
+                        .show();
+
+                return true;
         }
 
         return super.onContextItemSelected(item);

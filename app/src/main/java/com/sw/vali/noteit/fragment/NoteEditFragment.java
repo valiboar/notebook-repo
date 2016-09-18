@@ -1,6 +1,7 @@
 package com.sw.vali.noteit.fragment;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioAttributes;
@@ -8,13 +9,19 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -110,10 +117,34 @@ public class NoteEditFragment extends Fragment {
             public void onClick(View view) {
                 
                 if(isNoteEmpty()) {
-                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    Ringtone r = RingtoneManager.getRingtone(getActivity().getBaseContext(), notification);
-                    r.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
-                    r.play();
+//                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//                    Ringtone r = RingtoneManager.getRingtone(getActivity().getBaseContext(), notification);
+//                    r.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
+//                    r.play();
+
+
+                    // Check if no view has focus:
+//                    View v = getActivity().getCurrentFocus();
+//                    if (v != null) {
+//                        InputMethodManager imm = (InputMethodManager)getActivity().getBaseContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//                    }
+
+
+                    new Handler(Looper.getMainLooper()) { // not necessary the Handler here (we already have a UI thread
+
+                        @Override
+                        public void handleMessage(Message inputMessage) {
+
+                            Toast.makeText(getActivity().getBaseContext(), "No content to save; create a valid note!", Toast.LENGTH_SHORT).show();
+
+                            Vibrator vibrator = (Vibrator) getActivity().getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
+
+                            vibrator.vibrate(300);
+
+                            super.handleMessage(inputMessage);
+                        }
+                    }.handleMessage(null);
 
                     return;
                 }
@@ -126,13 +157,7 @@ public class NoteEditFragment extends Fragment {
     }
 
     private boolean isNoteEmpty() {
-
-        if (title.getText().toString().isEmpty() && message.getText().toString().isEmpty()) {
-            Toast.makeText(getActivity().getBaseContext(), "The note is empty; create a valid note!", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
-        return false;
+        return title.getText().toString().isEmpty() && message.getText().toString().isEmpty();
     }
 
     @Override
