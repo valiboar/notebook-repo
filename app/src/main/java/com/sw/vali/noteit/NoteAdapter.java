@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.sw.vali.noteit.model.Note;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Vali on 13-Sep-16.
@@ -32,6 +34,7 @@ public class NoteAdapter extends ArrayAdapter<Note> {
         TextView noteTitle;
         TextView noteText;
         ImageView noteIcon;
+        TextView noteDateCreated;
     }
 
     public NoteAdapter(Context context, ArrayList<Note> notes) {
@@ -58,6 +61,7 @@ public class NoteAdapter extends ArrayAdapter<Note> {
             viewHolder.noteTitle = (TextView) convertView.findViewById(R.id.list_item_note_title);
             viewHolder.noteText = (TextView) convertView.findViewById(R.id.list_item_note_body);
             viewHolder.noteIcon = (ImageView) convertView.findViewById(R.id.list_item_note_icon);
+            viewHolder.noteDateCreated = (TextView) convertView.findViewById(R.id.list_item_note_date_created);
 
             // use setTag to remember our view holder which is holding our references to our widgets
             convertView.setTag(viewHolder);
@@ -80,6 +84,8 @@ public class NoteAdapter extends ArrayAdapter<Note> {
             viewHolder.noteTitle.setText(note.getTitle());
             viewHolder.noteText.setText(note.getMessage());
             viewHolder.noteIcon.setImageResource(note.getAssociatedDrawable());
+            viewHolder.noteDateCreated.setText(getDate(note.getCreationDateMillis()));
+            viewHolder.noteDateCreated.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
 
             switch (note.getNoteCategory()) {
                 case PERSONAL:
@@ -115,5 +121,15 @@ public class NoteAdapter extends ArrayAdapter<Note> {
 
         // now that we modified the view to display appropriate data, return it so it will be displayed
         return convertView;
+    }
+
+    private String getDate(long dateCreatedMillis) {
+        // Create a DateFormatter object for displaying date in specified format.
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(dateCreatedMillis);
+        return formatter.format(calendar.getTime());
     }
 }

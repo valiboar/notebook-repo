@@ -2,6 +2,8 @@ package com.sw.vali.noteit.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -40,11 +42,19 @@ public class NoteViewFragment extends Fragment {
         Intent intent = getActivity().getIntent();
 
         title.setText(intent.getExtras().getString(MainActivity.EXTRA_NOTE_TITLE));
+        title.setTypeface(null, Typeface.BOLD);
         message.setText(intent.getExtras().getString(MainActivity.EXTRA_NOTE_MESSAGE));
 
         NoteCategory noteCategory = (NoteCategory) intent.getSerializableExtra(MainActivity.EXTRA_NOTE_CATEGORY);
         // if NoteCategory would have been defined in Note class => Note.NoteCategory noteCategory = (Note.NoteCategory)...
         icon.setImageResource(Note.categoryToDrawable(noteCategory));
+
+        // TODO: 23-Sep-16 Add some UI nice changes
+//        switch (noteCategory) {
+//            case PERSONAL:
+//                fragmentLayout.setBackgroundColor(getResources().getColor(R.color.colorPersonalNoteBackground));
+//                break;
+//        }
 
         return fragmentLayout;
     }

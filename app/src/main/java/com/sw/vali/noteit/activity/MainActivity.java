@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,8 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.sw.vali.noteit.model.enums.FragmentToLaunch;
 import com.sw.vali.noteit.R;
+import com.sw.vali.noteit.model.enums.FragmentToLaunch;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,11 +35,15 @@ public class MainActivity extends AppCompatActivity {
         setMainLayoutBackgroundColor(Color.parseColor("#c1d7d7"));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.logo_toolbar);
         setSupportActionBar(toolbar);
+
+        //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_USE_LOGO);
+        //getSupportActionBar().setLogo(R.drawable.start_logo);
 
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
-       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         boolean isBackgroundDark = sharedPreferences.getBoolean("background_color", false);
 
-        if(isBackgroundDark) {
+        if (isBackgroundDark) {
             setMainLayoutBackgroundColor(Color.parseColor("#3c3f41"));
         }
 
